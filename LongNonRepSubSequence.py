@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr 20 19:51:47 2021
+Created on Tue Apr 20 18:19:52 2021
 
 @author: Utpal
 """
@@ -15,13 +15,31 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
+        from collections import defaultdict
+        import string
         lst = []
         new_lst = []
+                
+        if not (0 <= len(s) <= 50000):
+           raise ValueError("Input out of bounds")
+        if s == "":
+           return 0
+            
         for char in s:
-            found_char, lst = self.found (char, lst)                                                           
+            found_char, lst = self.found (char, lst)                                                          
             new_lst.append(lst)
-        return new_lst
-    
+        print (new_lst)    
+        d = defaultdict(lambda: 0)
+        for elem in new_lst:
+            for item in elem:
+              if (item[-1] == 'X'):
+                d[item[-1]] = len(item[-1]) -1    
+              else:
+                d[item]  = len(item)
+        print (d.values())
+        val = max(d.values())
+        return val
+
     def found (self, char, lst):
         new_lst = []
         found_char = False
@@ -46,20 +64,7 @@ class Solution(object):
 # s = "abbbb"
 # s = "abbac"
 # s = "pwwkec"
-s = "aaxbcdcdax"          
-
-new_lst = Solution().lengthOfLongestSubstring(s)
-from collections import defaultdict
-d = defaultdict(lambda: 0)
-
-for elem in new_lst:
-   for item in elem:
-      if (item[-1] == 'X'):
-        d[item[-1]] = len(item[-1]) -1    
-      else:
-        d[item]  = len(item)
-
-print (d.values())
-print (d.keys())
-val = max(d.values())
-print (val)
+# s = "aaxbcdcdax"  
+s = "hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+subseq_len = Solution().lengthOfLongestSubstring(s)
+print (subseq_len)
