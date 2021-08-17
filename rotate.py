@@ -1,4 +1,4 @@
-### Version 1 (tricker - uses less space that the Version 2 below - uses a Python list as a queue to store 2 temp values)
+### Version 1 (should use less space than Version 2 below - uses a Python list as a queue to store 2 temp values)
 
 def rotate(nums, k):
 
