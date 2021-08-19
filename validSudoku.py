@@ -100,7 +100,7 @@ class Solution(object):
         shape_per_subBox = (3,3)
         offset = 3
         sub_box_element_lst = self.getAllSubboxes(num_of_subBoxes, shape_per_subBox, offset) 
-        subBox_bool = self.checkValidBox(sub_box_element_lst) #one boolean for all cols in board
+        subBox_bool = self.checkValidBox(sub_box_element_lst) #one boolean for all elements in all sub-boxes
 
         print (f"row check = {row_bool}; col check = {col_bool}; sub_box_check = {subBox_bool}")
         return (row_bool and col_bool and subBox_bool)
