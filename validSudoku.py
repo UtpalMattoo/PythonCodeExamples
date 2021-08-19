@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 17 17:52:05 2021
+Created on Thu Aug 19 11:06:03 2021
+
 @author: Utpal
-WIP..
 """
 
 import numpy as np
@@ -14,22 +14,25 @@ class Solution(object):
         #dup and range check
         isValid = True       
         
-        for elem in lst:        
-            if set(elem) == elem and self.inValidRange(elem):
+        for elem in lst:  
+            # print (elem)
+            if sorted(set(elem)) == sorted(elem) and self.inValidRange(elem):
                 continue
             else: 
                 isValid = False
                 break #don't go further; will lose info on what was false
-                
+                 
         return isValid
     
-    def inValidRange(self, lst, low=0, high=10): #range will check 0 to 9
-        inRange = all(i in range(low, high) for i in lst)
+    
+    def inValidRange(self, lst, low=1, high=9): #range will check 1 to 9
+        inRange = all(True if 0 <= int(item) <= 9 else False for item in lst)
+        # print (f"lst = {lst};;;; inRangeResult = {inRange}")
         return inRange
+    
     
     def getAllSubboxes(self, num_of_subBoxes, shape_per_subBox, offset):
                 
-        # board_rows = list(range(0, num_of_subBoxes))
         import itertools
         
         l1 = list(range(0, offset))
@@ -45,37 +48,29 @@ class Solution(object):
               lst.append(elem2)
               sub_box_dims.append(lst)
               lst = []
-        print (sub_box_dims)  
+        # print (sub_box_dims)  
              
-        rows = []
+        subBox_elements = []
         for sub_box in sub_box_dims:
-            #print ("************")
-            #print (sub_box)
             sub_box_indices_lst = list(itertools.product(*sub_box))
-            #print (sub_box_indices_lst)
+            # print (sub_box_indices_lst)
             lst = []
             for loc_in_subbox, indices in enumerate(sub_box_indices_lst):
-                #print (f"indices = {indices}; type(indices)")
                 i = indices[0]
                 j = indices[1]
-                #print (f"i={i}; j = {j}")
                 if (board[i][j] != '.'):
                     lst.append(board[i][j])
-            rows.append(lst)
-        print (rows)
+            subBox_elements.append(lst)
         
-        #rows contains all items from each sub-box
-        #call check valid sub-box for each element (list) in "rows" to check for 
-        #sub-box validity
-                
-        return 
-                 
+        return subBox_elements
+    
+        
     def isValidSudoku(self, board):
         """
         :type board: List[List[str]]
         :rtype: bool
         """
-                           
+        
         #1. Row check
         rows = []
         for row in range(np.shape(board)[0]):
@@ -83,10 +78,11 @@ class Solution(object):
            for item in list(board[row,:]):
                if (item != '.'):
                    lst.append(item)
-           rows.append(lst)
-        print (rows)
+           rows.append(lst)           
+        # print ("Rows as lists::")
+        # print (rows)
         row_bool = self.checkValidBox(rows) #one boolean for all rows in board
-        
+    
         #2. Col check
         cols = []
         for col in range(np.shape(board)[1]):
@@ -95,18 +91,21 @@ class Solution(object):
                 if (item != '.'):
                     lst.append(item)
             cols.append(lst)
-        print (cols)
+        # print ("Columns as lists::")
+        # print (cols)
         col_bool = self.checkValidBox(cols) #one boolean for all cols in board
         
         #3. Sub-box check
-        sub_box_lst = []
         num_of_subBoxes = 9
         shape_per_subBox = (3,3)
         offset = 3
-        sub_box_lst = self.getAllSubboxes(num_of_subBoxes, shape_per_subBox, offset)
-    
-board = np.array(
-[["5","3",".",".","7",".",".",".","."]
+        sub_box_element_lst = self.getAllSubboxes(num_of_subBoxes, shape_per_subBox, offset) 
+        subBox_bool = self.checkValidBox(sub_box_element_lst) #one boolean for all cols in board
+
+        print (f"row check = {row_bool}; col check = {col_bool}; sub_box_check = {subBox_bool}")
+        return (row_bool and col_bool and subBox_bool)
+       
+board = np.array([["8","3",".",".","7",".",".",".","."]
 ,["6",".",".","1","9","5",".",".","."]
 ,[".","9","8",".",".",".",".","6","."]
 ,["8",".",".",".","6",".",".",".","3"]
@@ -115,8 +114,22 @@ board = np.array(
 ,[".","6",".",".",".",".","2","8","."]
 ,[".",".",".","4","1","9",".",".","5"]
 ,[".",".",".",".","8",".",".","7","9"]])
+# False
+
 
 isValid = Solution().isValidSudoku(board)
-print (isValid)
+print (isValid)      
 
-# [[[0:2], [0:2]] , [[3:5], [3:5]], [[6:8], [6:8]].........]
+# the board above and below are same - replace the 8 at (0,0) by 5 or vice-versa
+
+# board = np.array(
+# [["5","3",".",".","7",".",".",".","."]
+# ,["6",".",".","1","9","5",".",".","."]
+# ,[".","9","8",".",".",".",".","6","."]
+# ,["8",".",".",".","6",".",".",".","3"]
+# ,["4",".",".","8",".","3",".",".","1"]
+# ,["7",".",".",".","2",".",".",".","6"]
+# ,[".","6",".",".",".",".","2","8","."]
+# ,[".",".",".","4","1","9",".",".","5"]
+# ,[".",".",".",".","8",".",".","7","9"]])
+# ## True        
