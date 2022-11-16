@@ -7,23 +7,15 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
-        if not (2 <= len(nums) <= 1000):
-            return -1
-        else:
-            print ("num check passed")
+        if not (2 <= len(nums) <= 10000):
+            assert 2 <= len(nums) <= 10000, "wrong length"
         
         if not (pow(-10,9) <= target <= pow(10,9)):
-            return -1
-        else:
-            print ("target check passed")
+            assert pow(-10,9) <= target <= pow(10,9), "target check passed"
         
         for index, val in enumerate(nums):
-            print (index)
             if not (pow(-10, 9) <= nums[index] <= pow(10, 9)):
-                print ("Invalid value found in nums: {}".format(nums[index]))
-                return -1
-            else:
-                continue
+                assert pow(-10, 9) <= nums[index] <= pow(10, 9), "Invalid value found in nums"
         
         lst = []            
         found = False
