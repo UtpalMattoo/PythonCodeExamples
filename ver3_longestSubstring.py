@@ -2,6 +2,7 @@
 """
 Created on Tue Mar 28 13:39:21 2023
 least complicated version I could come up with so far
+bug (does not affect results): the last char in string is included twice
 @author: utpal
 """
 
